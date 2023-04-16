@@ -8,6 +8,7 @@ let currentPlayer = X;
 let boardGame = Array(9).fill(null);
 let hasWon = false;
 let draw = false;
+let moveWin = Array(3);
 
 function start() {
     boxes.forEach(box => box.addEventListener("click", clicked));
@@ -23,6 +24,10 @@ function clicked(e) {
         if(playerTurnHandle()) {
             text.innerText = `${currentPlayer} has won!`
             hasWon = true;
+            moveWin.forEach(move => {
+                boxes[move].style.backgroundColor = 'rgba(247, 80, 35, 0.6)';
+            })
+            console.log(moveWin);
         } else {
             let cnt = 0;
             for(let i = 0; i < boardGame.length; i++) {
@@ -42,6 +47,10 @@ function clicked(e) {
 restartBtn.addEventListener('click', restartGame);
 function restartGame(e) {
     boardGame.fill(null);
+    moveWin.forEach(move => {
+        boxes[move].style.backgroundColor = '';
+    })
+    moveWin = [];
     for(let i = 0; i < boxes.length; i++) {
         boxes[i].innerText = '';
     }
@@ -67,13 +76,22 @@ const combo = [
 function playerTurnHandle() {
     for(let i = 0; i < combo.length; i++) {
         let curMove = boardGame[combo[i][0]];
+        moveWin = [];
+        moveWin.push(combo[i][0]);
         if(curMove == null) continue;
         let cnt = 0;
         for(let j = 1; j < combo[i].length; j++) {
-            if(boardGame[combo[i][j]] == null) break;
-            if(boardGame[combo[i][j]] == curMove) cnt++;
+            if(boardGame[combo[i][j]] == null) {
+                moveWin = [];
+                break;
+            }
+            if(boardGame[combo[i][j]] == curMove) {
+                cnt++;
+                moveWin.push(combo[i][j]);
+            }
         }
         if(cnt === 2) return true;
+        else moveWin = [];
     }
     return false;
 }
