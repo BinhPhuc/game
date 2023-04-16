@@ -18,7 +18,7 @@ function clicked(e) {
         boardGame[index] = currentPlayer;
         e.target.innerText = currentPlayer;
         if(playerTurnHandle()) {
-            text.innerText = `${currentPlayer} thang roi dit me thang ngu!`
+            text.innerText = `${currentPlayer} has won!`
         }
         currentPlayer = (currentPlayer === X ? O : X);
     }
@@ -44,7 +44,7 @@ const combo = [
     [6, 7, 8], // third row
     [0, 3, 6], // first column
     [1, 4, 7], // second column
-    [2, 5, 7], // third column
+    [2, 5, 8], // third column
     [0, 4, 8], // left cross
     [2, 4, 6], // right cross
 ];
