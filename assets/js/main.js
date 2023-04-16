@@ -7,18 +7,31 @@ const O = "O";
 let currentPlayer = X;
 let boardGame = Array(9).fill(null);
 let hasWon = false;
+let draw = false;
 
 function start() {
     boxes.forEach(box => box.addEventListener("click", clicked));
 }
 
 function clicked(e) {
+    if(hasWon) return;
+    if(draw) return;
     let index = e.target.id;
     if(!boardGame[index]) {
         boardGame[index] = currentPlayer;
         e.target.innerText = currentPlayer;
         if(playerTurnHandle()) {
             text.innerText = `${currentPlayer} has won!`
+            hasWon = true;
+        } else {
+            let cnt = 0;
+            for(let i = 0; i < boardGame.length; i++) {
+                if(boardGame[i] != null) cnt++;
+            }
+            if(cnt == 9) {
+                draw = true;
+                text.innerText = 'Draw!';
+            }
         }
         currentPlayer = (currentPlayer === X ? O : X);
     }
@@ -34,6 +47,8 @@ function restartGame(e) {
     }
     currentPlayer = X;
     text.innerText = 'Tic-tac-toe';
+    hasWon = false;
+    draw = false;
 }
 
 // End restart button logic
